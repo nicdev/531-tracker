@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Program extends Model
 {
+
   protected $fillable = [
     'one_rep_max_deadlift',
     'one_rep_max_press',
@@ -42,8 +43,26 @@ class Program extends Model
     ];
   }
 
-  private static function estimateBaseWeight($oneRepMax) {
-    return ceil((.9 * $oneRepMax) / 5) * 5;
+  public function getWeek($week) {
+    $result = [];
+    
+    foreach($this->base as $movement => $baseWeight) {
+      for($i = 1; $i <= 3; $i++) {
+          $result[$movement]["set{$i}"] = [
+            'weight'=> $this->roundWeight($baseWeight, config("percents.{$week}.set{$i}")),
+            'reps' => config("reps.{$week}.set{$i}")
+          ];
+      }
+    }
+
+    return $result;
   }
 
+  private static function estimateBaseWeight($oneRepMax) {
+    return ceil((config('percents.base') * $oneRepMax) / 5) * 5;
+  }
+
+  private static function roundWeight($baseWeight, $percentage) {
+    return ceil(($baseWeight * $percentage) / 5) * 5;
+  }
 }

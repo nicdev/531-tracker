@@ -71,4 +71,76 @@ class ProgramTest extends TestCase
       $this->assertEquals($expected, $program->base);
     }
 
+    public function testGetWorkOutWeek1()
+    {
+      $program = Program::create([
+        'one_rep_max_deadlift' => 255,
+        'one_rep_max_press' => 125,
+        'one_rep_max_squat' => 245,
+        'one_rep_max_bench' => 195
+      ]);
+
+      // week 1
+      $expected = [
+        'deadlift' => [
+          'set1' => [
+            'weight' => 150,
+            'reps' => 5
+          ],
+          'set2' => [
+            'weight' => 175,
+            'reps' => 5
+          ],
+          'set3' => [
+            'weight' => 200,
+            'reps' => '5+'
+          ]
+        ],
+        'press' => [
+          'set1' => [
+            'weight' => 75,
+            'reps' => 5
+          ],
+          'set2' => [
+            'weight' => 90,
+            'reps' => 5
+          ],
+          'set3' => [
+            'weight' => 100,
+            'reps' => '5+'
+          ]
+        ],
+        'squat' => [
+          'set1' => [
+            'weight' => 150,
+            'reps' => 5
+          ],
+          'set2' => [
+            'weight' => 170,
+            'reps' => 5
+          ],
+          'set3' => [
+            'weight' => 195,
+            'reps' => '5+'
+          ]
+        ],
+        'bench' => [
+          'set1' => [
+            'weight' => 120,
+            'reps' => 5
+          ],
+          'set2' => [
+            'weight' => 135,
+            'reps' => 5
+          ],
+          'set3' => [
+            'weight' => 155,
+            'reps' => '5+'
+          ]
+        ],
+      ]; // /expected
+
+      $this->assertEquals($expected, $program->getWeek('week1'));
+    }
+
 }
