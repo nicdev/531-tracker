@@ -45,7 +45,7 @@ class Program extends Model
 
   public function getWeek($week) {
     $result = [];
-    
+
     foreach($this->base as $movement => $baseWeight) {
       for($i = 1; $i <= 3; $i++) {
           $result[$movement]["set{$i}"] = [
