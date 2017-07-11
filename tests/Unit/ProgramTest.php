@@ -12,19 +12,25 @@ class ProgramTest extends TestCase
 
     use DatabaseMigrations;
 
-    public function testHasOneRepMaxes()
-    {
-      $program = new Program([
+    protected $program;
+
+    protected function setUp() {
+      parent::setUp();
+
+      $this->program = new Program([
         'one_rep_max_deadlift' => 255,
         'one_rep_max_press' => 125,
         'one_rep_max_squat' => 245,
         'one_rep_max_bench' => 195
       ]);
+    }
 
-      $this->assertEquals(255, $program->one_rep_max_deadlift);
-      $this->assertEquals(125, $program->one_rep_max_press);
-      $this->assertEquals(245, $program->one_rep_max_squat);
-      $this->assertEquals(195, $program->one_rep_max_bench);
+    public function testHasOneRepMaxes()
+    {
+      $this->assertEquals(255, $this->program->one_rep_max_deadlift);
+      $this->assertEquals(125, $this->program->one_rep_max_press);
+      $this->assertEquals(245, $this->program->one_rep_max_squat);
+      $this->assertEquals(195, $this->program->one_rep_max_bench);
     }
 
     public function testOneRepMaxesAreAlwaysIntegers()
@@ -44,12 +50,6 @@ class ProgramTest extends TestCase
 
     public function testGetBaseWeights()
     {
-      $program = new Program([
-        'one_rep_max_deadlift' => 255,
-        'one_rep_max_press' => 125,
-        'one_rep_max_squat' => 245,
-        'one_rep_max_bench' => 195
-      ]);
 
       $expected = [
         'deadlift' => 230,
@@ -58,18 +58,11 @@ class ProgramTest extends TestCase
         'bench' => 180
       ];
 
-      $this->assertEquals($expected, $program->base);
+      $this->assertEquals($expected, $this->program->base);
     }
 
     public function testGetWorkOutWeeks()
     {
-      $program = Program::create([
-        'one_rep_max_deadlift' => 255,
-        'one_rep_max_press' => 125,
-        'one_rep_max_squat' => 245,
-        'one_rep_max_bench' => 195
-      ]);
-
       // week 1
       $expected = [
         'week1' => [
@@ -306,9 +299,9 @@ class ProgramTest extends TestCase
           ]
       ]; // /expected
 
-      $this->assertEquals($expected['week1'], $program->getWeek('week1'));
-      $this->assertEquals($expected['week2'], $program->getWeek('week2'));
-      $this->assertEquals($expected['week3'], $program->getWeek('week3'));
-      $this->assertEquals($expected['week4'], $program->getWeek('week4'));
+      $this->assertEquals($expected['week1'], $this->program->getWeek('week1'));
+      $this->assertEquals($expected['week2'], $this->program->getWeek('week2'));
+      $this->assertEquals($expected['week3'], $this->program->getWeek('week3'));
+      $this->assertEquals($expected['week4'], $this->program->getWeek('week4'));
     }
 }
